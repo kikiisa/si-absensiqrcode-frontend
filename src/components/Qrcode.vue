@@ -2,16 +2,27 @@
 import { QrcodeStream } from "vue-qrcode-reader";
 import { provide, ref, } from "vue";
 import { useRouter } from 'vue-router'
-
+import { api } from "../utils/URL";
+import axios from "axios";
 import { toastError, toastSuccess,enskripsi } from '../utils/Setting';
 export default {
   components: {
     QrcodeStream,
   },
   setup() {
+    const informasiPegawai = ref("")
     const route = useRouter()
     const result = ref("");
     const error = ref("");
+    const informasiPeg = () => 
+    {
+
+    }
+    const getInformasi = async () => 
+    {
+      const informasi = await axios.get(`${api}/informasi`)
+      return informasi.data
+    }
     function paintBoundingBox(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
         const {
@@ -47,18 +58,20 @@ export default {
       }
     }
 
-    function onDetect(detectedCodes) {
+    async function onDetect(detectedCodes)  {
       result.value = detectedCodes.map((code) => code.rawValue);
-      console.log(result.value)
-      if(result.value[0] == "present_masuk")
+      const response = await getInformasi();
+      if(result.value[0] == response.qrcode_masuk)
       {
-        enskripsi("present_masuk")
+        window.localStorage.setItem("token",enskripsi(response.qrcode_masuk))
         toastSuccess("Scan Berhasil Silahkan Selfie Sebagai Bukti Absensi Masuk Hari ini")
         route.push('/absensi_masuk')
         
-      }else if(result.value[0] == "present_keluar")
+      }else if(result.value[0] == response.qrcode_pulang)
       {
+        window.localStorage.setItem("token",  enskripsi(response.qrcode_pulang))
         toastSuccess("Scan Berhasil Silahkan Selfie Sebagai Bukti Absensi Keluar Hari ini")
+      route.push('/absensi_keluar')
       }else{
         toastError("Qr kode Tidak Terdaftar")
       }

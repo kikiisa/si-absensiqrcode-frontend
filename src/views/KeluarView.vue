@@ -3,27 +3,26 @@ import { onMounted } from 'vue';
 import Camera from '../components/Camera.vue';
 import {deskripsi,toastError} from "../utils/Setting"
 import {useRouter} from 'vue-router'
-import {api} from "../utils/URL"
 import axios from "axios"
+import {api} from "../utils/URL"
 export default {
   components:{
     Camera
   },
   setup() {
     const route = useRouter()
-    const getInformasi = async () => {
-      const informasi = await axios.get(`${api}/informasi`)
-      return informasi.data
+    const informasi = async () => {
+      const datas = await axios.get(`${api}/informasi`)
+      return datas.data
     }
     onMounted(async () => {
-        const informasi = await getInformasi()
-        console.log(informasi.qrcode_masuk) 
+        const datas = await informasi()
+        console.log(datas.qrcode_pulang)
         const result = deskripsi(window.localStorage.getItem("token") == null ? '' : window.localStorage.getItem("token"))
-        if(result != informasi.qrcode_masuk)
+        if(result != datas.qrcode_pulang)
         {
-          
           route.push('/')
-          toastError("Terjadi Kesalahan")
+          toastError("Token Tidak Valid")
         }
     })
   },

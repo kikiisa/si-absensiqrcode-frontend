@@ -12,8 +12,7 @@ const optionsToast = {
 
 const enskripsi = (token) => {
     const ciphertext = Enskripsi.AES.encrypt(token,secretKey).toString();
-    window.localStorage.setItem("token",ciphertext)
-    return ChannelSplitterNode
+    return ciphertext
 }
 
 const deskripsi = (token) => 
@@ -32,7 +31,24 @@ const toastSuccess = (message) =>
     toast.success(message,optionsToast)
 }
 
+const dataURLToBlob = (dataUrl) => {
+    var parts = dataUrl.split(';base64,');
+    var contentType = parts[0].split(':')[1];
+    var raw = window.atob(parts[1]);
+    var rawLength = raw.length;
+    var uInt8Array = new Uint8Array(rawLength);
+
+    for (var i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], {
+        type: contentType
+    });
+}
+
+
 
 export {
-    toastError,toastSuccess,enskripsi,deskripsi
+    toastError,toastSuccess,enskripsi,deskripsi,dataURLToBlob
 }
