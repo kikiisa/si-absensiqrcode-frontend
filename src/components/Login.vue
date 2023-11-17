@@ -6,13 +6,13 @@ import {toastError, toastSuccess,enskripsi } from '../utils/Setting'
 export default {
   setup() {
     const inputForm = ref("")
-    const uuid = ref("")
     const checkAccount = async () => 
     {
       const response = await axios.post(`${api}/auth`,{
         nip:inputForm.value
       }).then((response) => {
         const datas = response.data;
+        console.log(datas);
         console.log(enskripsi(datas.data.uuid));
         if(datas.status == false)
         {
