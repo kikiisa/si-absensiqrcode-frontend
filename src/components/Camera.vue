@@ -20,7 +20,7 @@ export default {
         if (camera.value) {
         // Assuming there's a method or property to switch to the front camera
         camera.value.facingMode = "environment"; // Adjust this based on the actual method/property
-      }
+      } 
     };
     const snapshot = async () => {
       if ("geolocation" in navigator) {
@@ -82,7 +82,7 @@ export default {
       camera,
       snapshot,
       back,
-      switchToFrontCamera
+      
     };
   },
 };
@@ -100,11 +100,11 @@ export default {
         <div class="card border-0">
           <div class="card-body">
             <camera
+              facing-mode="user"
               :resolution="{ width: 375, height: 212 }"
               ref="camera"
               autoplay
             ></camera>
-            <button @click="switchToFrontCamera" class="fa fa-camera-retro" >Switch Kamera</button>
             <button class="btn btn-primary fw-bold btn-sm" @click="snapshot">
               Absensi Sekarang
             </button>
