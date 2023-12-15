@@ -19,7 +19,7 @@ export default {
       const switchToFrontCamera = () => {
         if (camera.value) {
         // Assuming there's a method or property to switch to the front camera
-        camera.value.switchToFrontCamera(); // Adjust this based on the actual method/property
+        camera.value.facingMode = "user"; // Adjust this based on the actual method/property
       }
     };
     const snapshot = async () => {
@@ -31,7 +31,6 @@ export default {
           var latitude = position.coords.latitude;
           var longitude = position.coords.longitude;
           const blob = await camera.value?.snapshot();
-          camera.value.switchCamera();
           
         // To show the screenshot with an image tag, create a url
           const url = URL.createObjectURL(blob);
