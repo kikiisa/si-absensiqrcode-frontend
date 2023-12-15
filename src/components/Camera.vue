@@ -16,6 +16,12 @@ export default {
     const token = window.localStorage.getItem("token");
     const uuid = window.localStorage.getItem("UUID");
         // Use camera reference to call functions
+      const switchToFrontCamera = () => {
+        if (camera.value) {
+        // Assuming there's a method or property to switch to the front camera
+        camera.value.switchToFrontCamera(); // Adjust this based on the actual method/property
+      }
+    };
     const snapshot = async () => {
       if ("geolocation" in navigator) {
       // Menggunakan navigator.geolocation.getCurrentPosition untuk mendapatkan lokasi
@@ -26,6 +32,7 @@ export default {
           var longitude = position.coords.longitude;
           const blob = await camera.value?.snapshot();
           camera.value.switchCamera();
+          
         // To show the screenshot with an image tag, create a url
           const url = URL.createObjectURL(blob);
           var reader = new FileReader();
@@ -76,6 +83,7 @@ export default {
       camera,
       snapshot,
       back,
+      switchToFrontCamera
     };
   },
 };
@@ -97,6 +105,7 @@ export default {
               ref="camera"
               autoplay
             ></camera>
+            <button @click="switchToFrontCamera" class="fa fa-camera-retro" >Switch Kamera</button>
             <button class="btn btn-primary fw-bold btn-sm" @click="snapshot">
               Absensi Sekarang
             </button>
