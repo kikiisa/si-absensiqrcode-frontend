@@ -1,6 +1,7 @@
 <script>
 import { QrcodeStream } from "vue-qrcode-reader";
 import { provide, ref, } from "vue";
+
 import { useRouter } from 'vue-router'
 import { api } from "../utils/URL";
 import axios from "axios";
@@ -10,14 +11,16 @@ export default {
     QrcodeStream,
   },
   setup() {
-    const informasiPegawai = ref("")
     const route = useRouter()
     const result = ref("");
     const error = ref("");
-    const informasiPeg = () => 
+    const logout = () => 
     {
-
-    }
+        window.localStorage.removeItem("UUID")
+        toastSuccess("Berhasil Logout")
+        window.location.reload()
+        
+      }
     const getInformasi = async () => 
     {
       const informasi = await axios.get(`${api}/informasi`)
@@ -65,6 +68,7 @@ export default {
       {
         window.localStorage.setItem("token",enskripsi(response.qrcode_masuk))
         toastSuccess("Scan Berhasil Silahkan Selfie Sebagai Bukti Absensi Masuk Hari ini")
+
         route.push('/absensi_masuk')
         
       }else if(result.value[0] == response.qrcode_pulang)
@@ -76,7 +80,7 @@ export default {
         toastError("Qr kode Tidak Terdaftar")
       }
     }
-    return { result, error, onDetect, onError, paintBoundingBox };
+    return { result, error, onDetect, onError, paintBoundingBox,logout };
   },
 };
 </script>
@@ -88,6 +92,10 @@ export default {
         <div class="bg-info p-4 rounded-4 text-center text-light fw-bold mb-3">
           Silahkan Scan Qr Code untuk memulai absensi
         </div>
+      </div>
+      <div class="col-lg-8">
+        <button @click="logout" class="btn btn-danger mb-2 fw-bold"><i class="fa fa-arrow-left"></i> Keluar</button>
+      
       </div>
       <div class="col-lg-8">
         <div class="card border-0">
