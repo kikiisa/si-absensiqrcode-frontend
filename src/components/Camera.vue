@@ -19,7 +19,7 @@ export default {
       const switchToFrontCamera = () => {
         if (camera.value) {
         // Assuming there's a method or property to switch to the front camera
-        camera.value.facingMode = "user"; // Adjust this based on the actual method/property
+        camera.value.facingMode = "environment"; // Adjust this based on the actual method/property
       }
     };
     const snapshot = async () => {
